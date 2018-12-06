@@ -31,25 +31,25 @@
             position: relative;
         }
 
-        .pizza>* {
+        .pizza> * {
             position: absolute;
         }
 
-        .pizza>.pizza-toppings {
+        .pizza > .pizza-toppings {
             width: 70%;
             left: 100px;
         }
 
-        .pizza>.pizza-board {
+        .pizza > .pizza-board {
             width: 100%;
         }
 
-        .pizza>.pizza-base {
+        .pizza > .pizza-base {
             width: 75%;
             left: 90px;
         }
 
-        .pizza>.pizza-board {
+        .pizza > .pizza-board {
             width: 100%;
         }
 
@@ -169,7 +169,7 @@
     </style>
     <script>   
         var toppings = [{
-            name: 'I',
+            name: 'anchovy',
             labelImage: './assets/toppings/anchovy.svg',
             price: 0.99,
         }, {
@@ -222,10 +222,9 @@
         var selectedToppings = []; //存在数组里，存是否被点击的状态
         var totalPrice = pizzaPrice;
 
-
-        function higherOrderFunction() {
-            return function () { };
-        }
+        // function higherOrderFunction() {
+        //     return function () { };
+        // }
 
         function onToppingClick(topping) {
             var listItem = document.createElement('li');
@@ -258,7 +257,7 @@
         function removeTopping(topping) {
            removeActiveToppingFormButton(topping);
            removeToppingPriceSummary(topping);
-            renderPriceOnToppingRemove(topping);
+           renderPriceOnToppingRemove(topping);
         }
         
 
@@ -347,9 +346,7 @@
             }
         }
 
-
         function main() {
-
             renderToppingsForm();
             document.querySelector(`span#totalPrice`).innerText = totalPrice;//查找id为totalPrice的span
         }//当DOM content loaded的时候，调用main方法
@@ -363,10 +360,10 @@
         <section class="pizza-viewer">
             <div class="pizza">
                 <div class="pizza-board">
-                    <img src="./assets/board.svg" alt="Pizza board">
+                    <img src="./assets/toppings/board.svg" alt="Pizza board">
                 </div>
                 <div class="pizza-base">
-                    <img src="./assets/base.svg" alt="Pizza base">
+                    <img src="./assets/toppings/base.svg" alt="Pizza base">
                 </div>
                 <div class="pizza-toppings">
                     <img src="./assets/toppings/anchovies.svg" alt="Anchovies">
@@ -416,7 +413,6 @@
                 <section class="toppings">
                     <h2>Choose your toppings</h2>
                     <div class="toppings-container" id="toppingsContainer">
-
                     </div>
                 </section>
                 <section class="summary">
@@ -426,7 +422,6 @@
                             <li>
                                 <span class="item">Pizza</span>
                                 <span class="price">$9.99</span>
-
                                 <ul id='summaryList'>
                                 </ul>
                             </li>
