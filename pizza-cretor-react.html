@@ -1,164 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <script src="https://fb.me/react-15.0.0-rc.2.js"></script>
+    <script src="https://fb.me/react-dom-15.0.0-rc.2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <title>Pizza Creator</title>
+  </head>
 
-<head>
-  <script src="https://fb.me/react-15.0.0-rc.2.js"></script>
-  <script src="https://fb.me/react-dom-15.0.0-rc.2.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-  <title>Pizza Creator</title>
-</head>
-
-<body>
-  <div id="container"></div>
-  <script type="text/babel">
-    const Form = () => {
+  <body>
+    <div id="container"></div>
+    <script type="text/babel">
+      const Form = () => {
         return (
           <div className="form">
             <h2>Enter your details</h2>
-              <FormItem formContent="NAME" />
-              <FormItem formContent="ADDRESS" />
-              <FormItem formContent="EMAIL" />
-              <FormItem formContent="POSTCODE" />
-              <FormItem formContent="CONFIRM EMAIL" />
-              <FormItem formContent="CONTACT ADDRESS" />
+            <FormItem formContent="NAME" />
+            <FormItem formContent="ADDRESS" />
+            <FormItem formContent="EMAIL" />
+            <FormItem formContent="POSTCODE" />
+            <FormItem formContent="CONFIRM EMAIL" />
+            <FormItem formContent="CONTACT ADDRESS" />
           </div>
         );
-      }
+      };
 
-     const FormItem = ({formContent}) => 
-      (
-          <div className="form-detail">
-            <label className="form-content">{formContent}</label>
-            <input type="text" />
-          </div>
+      const FormItem = ({ formContent }) => (
+        <div className="form-detail">
+          <label className="form-content">{formContent}</label>
+          <input type="text" />
+        </div>
       );
-      
-    
-      const toppingItems = [{
-            name: 'anchovy',
-            labelImage: './assets/toppings/anchovy.svg',
-            price: 0.99,
-        }, {
-            name: 'Bacon',
-            labelImage: './assets/toppings/bacon.svg',
-            price: 0.99,
-        }, {
-            name: 'Basil',
-            labelImage: './assets/toppings/basil.svg',
-            price: 0.99,
-        }, {
-            name: 'Chili',
-            labelImage: './assets/toppings/chili.svg',
-            price: 0.99,
-        }, {
-            name: 'Mozzarella',
-            labelImage: './assets/toppings/mozzarella.svg',
-            price: 0.99,
-        }, {
-            name: 'Mushroom',
-            labelImage: './assets/toppings/mushroom.svg',
-            price: 0.99,
-        }, {
-            name: 'Olive',
-            labelImage: './assets/toppings/olive.svg',
-            price: 0.99,
-        }, {
-            name: 'Onion',
-            labelImage: './assets/toppings/onion.svg',
-            price: 0.99,
-        }, {
-            name: 'Pepper',
-            labelImage: './assets/toppings/pepper.svg',
-            price: 0.99,
-        }, {
-            name: 'Pepperoni',
-            labelImage: './assets/toppings/pepperoni.svg',
-            price: 0.99,
-        }, {
-            name: 'Peppers',
-            labelImage: './assets/toppings/pepper.svg',
-            price: 0.99,
-        }, {
-            name: 'Sweetcorn',
-            labelImage: './assets/toppings/sweetcorn.svg',
-            price: 0.99,
-        }];
 
-      const Topping = ({
-        imgsrc,
-        name,
-        className,
-        onClick,
-      }) => (
-        <div className={className} onClick={onClick}>
-          <img style = {{width:'25px'}} src={imgsrc} alt={name} />
+      const Topping = ({ labelImage, name, className, onClick }) => (
+        <div className={`${className} topping`} onClick={onClick}>
+          <img style={{ width: "25px" }} src={labelImage} alt={name} />
           <span>{name}</span>
         </div>
-      )
+      );
 
       class Toppings extends React.Component {
-        constructor() {
-              super();
-              this.state = {
-                selectedToppings: [],
-              };
-        }
-
-        toggleSelectedToppings(topping) {
-         this.setState({
-           selectedToppings:[
-           ...this.state.selectedToppings,
-           {
-            name,
-            labelImage,
-          }
-           ]
-         });
-        }
-       
         render() {
-          const { selectedToppings } = this.state;
-          return(
-            <div>
-              {toppingItems.map((topping) => {
-                const {name, labelImage} = topping;
-                return (
-                  <Topping
-                    key={name}
-                    imgsrc={labelImage}
-                    name={name}
-                    className= {selectedToppings.find(selectedTopping => selectedTopping.name === name) && 'active'}
-                    onClick = {() => this.toggleSelectedToppings({name,labelImage})}
-                  />
-               );
-              }
-              )}
-           </div>
-          );
-      }
-    }
-
-    const SummaryTemplate = (price) => (
-      <div>
-        <h2>Summary</h2>
-      <ul> 
-      </ul>
-      </div>
-    );
- 
-    class Summary extends React.Component {
-      constructor() {
-        
-      }
-    }
-
-
-      class PizzaCreatorApp extends React.Component {
-        render() {
+          const {
+            toppings,
+            selectedToppings,
+            toggleSelectedTopping
+          } = this.props;
           return (
             <div>
-              <Form />     
-              <Toppings />
+              <h2>Toppings</h2>
+              {toppings.map(topping => {
+                const { name, labelImage } = topping;
+                return (
+                  <Topping
+                    className={
+                      selectedToppings.find(
+                        selectedTopping => selectedTopping.name === name
+                      ) && "active"
+                    }
+                    onClick={() => toggleSelectedTopping(topping)}
+                    key={name}
+                    name={name}
+                    labelImage={labelImage}
+                  />
+                );
+              })}
+            </div>
+          );
+        }
+      }
+
+      const Item = ({ name, price }) => (
+        <div>
+          <span>{name}</span>
+          &nbsp;
+          <span>${price}</span>
+        </div>
+      );
+
+      const Summary = ({ selectedToppings = [] }) => (
+        <div>
+          <h2>Summary</h2>
+          {selectedToppings.map(({ name, price }) => (
+            <Item name={name} price={price} key={name} />
+          ))}
+          <div>
+            Total:${selectedToppings.reduce((total, { price }) => total + price, 9.99)}
+          </div>
+        </div>
+      );
+
+      const PlaceOrderBtn = () => <button> place order </button>;
+
+      class PizzaCreatorApp extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            toppings: [
+              {
+                name: "anchovy",
+                labelImage: "./assets/toppings/anchovy.svg",
+                price: 0.99
+              },
+              {
+                name: "Bacon",
+                labelImage: "./assets/toppings/bacon.svg",
+                price: 0.99
+              },
+              {
+                name: "Basil",
+                labelImage: "./assets/toppings/basil.svg",
+                price: 0.99
+              },
+              {
+                name: "Chili",
+                labelImage: "./assets/toppings/chili.svg",
+                price: 0.99
+              },
+              {
+                name: "Mozzarella",
+                labelImage: "./assets/toppings/mozzarella.svg",
+                price: 0.99
+              },
+              {
+                name: "Mushroom",
+                labelImage: "./assets/toppings/mushroom.svg",
+                price: 0.99
+              },
+              {
+                name: "Olive",
+                labelImage: "./assets/toppings/olive.svg",
+                price: 0.99
+              },
+              {
+                name: "Onion",
+                labelImage: "./assets/toppings/onion.svg",
+                price: 0.99
+              },
+              {
+                name: "Pepper",
+                labelImage: "./assets/toppings/pepper.svg",
+                price: 0.99
+              },
+              {
+                name: "Pepperoni",
+                labelImage: "./assets/toppings/pepperoni.svg",
+                price: 0.99
+              },
+              {
+                name: "Peppers",
+                labelImage: "./assets/toppings/pepper.svg",
+                price: 0.99
+              },
+              {
+                name: "Sweetcorn",
+                labelImage: "./assets/toppings/sweetcorn.svg",
+                price: 0.99
+              }
+            ],
+            selectedToppings: []
+          };
+          this.toggleSelectedTopping = this.toggleSelectedTopping.bind(this);
+        }
+
+        toggleSelectedTopping(topping) {
+          const { selectedToppings } = this.state;
+          const { name } = topping;
+
+          const isActive = selectedToppings.find(
+            selectedTopping => selectedTopping.name === name
+          );
+
+          if (isActive) {
+            this.setState({
+              selectedToppings: selectedToppings.filter(
+                selectedTopping => selectedTopping.name !== name
+              )
+            });
+            return;
+          }
+
+          this.setState({
+            selectedToppings: [...this.state.selectedToppings, topping]
+          });
+        }
+        render() {
+          const { toppings, selectedToppings } = this.state;
+          return (
+            <div>
+              <Form />
+              <Toppings
+                toppings={toppings}
+                selectedToppings={selectedToppings}
+                toggleSelectedTopping={this.toggleSelectedTopping}
+              />
+              <Summary selectedToppings={selectedToppings} />
+              <PlaceOrderBtn />
             </div>
           );
         }
@@ -166,11 +202,10 @@
 
       ReactDOM.render(
         <div>
-        <PizzaCreatorApp />
+          <PizzaCreatorApp />
         </div>,
         document.querySelector("#container")
       );
     </script>
-</body>
-
+  </body>
 </html>
